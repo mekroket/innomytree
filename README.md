@@ -55,8 +55,8 @@ Projeyi kendi sunucunuzda veya local ortamınızda çalıştırmak için aşağ�
 ## 👤 Admin Girişi
 
 Varsayılan admin hesabı veritabanı kurulumu ile birlikte gelir:
-*   **Kullanıcı Adı:** `mekroket`
-*   **Şifre:** `Oguz.438`
+*   **Kullanıcı Adı:** `admin`
+*   **Şifre:** `admin123`
 
 ## 📄 Lisans
 

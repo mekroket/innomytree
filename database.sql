@@ -31,8 +31,7 @@ CREATE TABLE IF NOT EXISTS admins (
     password VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Varsayılan Admin Hesabı (Kullanıcı: mekroket, Şifre: Oguz.438)
--- Hash güncellendi
+-- Varsayılan Admin Hesabı (Kullanıcı: admin, Şifre: admin123)
 INSERT INTO admins (username, password) VALUES 
-('mekroket', '$2y$10$hQeXAqB5FYJhbQ.nI8Phbuq4YueLq6wPM/blyCo0bGqzDSSVNDZz9C')
+('admin', '$2y$10$4ujpWOmGNbA8TjgQaXmkqeBTXsZdLlng3OjghfcXDXLh.j3ADjgCu')
 ON DUPLICATE KEY UPDATE password = VALUES(password);
