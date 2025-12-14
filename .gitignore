@@ -1,0 +1,8 @@
+/includes/db.php
+/.vscode
+/.idea
+/node_modules
+/vendor
+*.log
+.DS_Store
+Thumbs.db
