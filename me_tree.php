@@ -41,6 +41,7 @@ if (empty($chunks)) {
 ?>
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,11 +56,13 @@ if (empty($chunks)) {
             position: relative;
             display: block;
         }
+
         .tree-slider-track {
             display: flex;
             transition: transform 0.5s ease;
             width: 100%;
         }
+
         .tree-slide {
             min-width: 100%;
             display: flex;
@@ -67,12 +70,14 @@ if (empty($chunks)) {
             align-items: center;
             position: relative;
         }
+
         .tree-container {
             position: relative;
             width: 100%;
             display: flex;
             justify-content: center;
         }
+
         .info-container {
             margin-top: 20px;
             display: flex;
@@ -81,6 +86,7 @@ if (empty($chunks)) {
         }
     </style>
 </head>
+
 <body>
     <!-- Logo Area -->
     <div class="logo-container">
@@ -125,38 +131,49 @@ if (empty($chunks)) {
     <div class="container">
         <div class="tree-wrapper">
             <div class="tree-slider-track" id="sliderTrack">
-                <?php 
+                <?php
                 $global_index = 0;
-                foreach ($chunks as $page_index => $chunk): 
-                ?>
-                <div class="tree-slide">
-                    <div class="tree-container">
-                        <img src="assets/isikliagaclar/<?php echo $tree_image; ?>" alt="Christmas Tree" class="tree-img">
-                        
-                        <?php foreach ($chunk as $index => $msg): ?>
-                            <?php 
+                foreach ($chunks as $page_index => $chunk):
+                    ?>
+                    <div class="tree-slide">
+                        <div class="tree-container">
+                            <img src="assets/isikliagaclar/<?php echo $tree_image; ?>" alt="Christmas Tree"
+                                class="tree-img">
+
+                            <?php foreach ($chunk as $index => $msg): ?>
+                                <?php
                                 // Calculate position based on index within the chunk (0-4)
-                                $local_index = $index; 
+                                $local_index = $index;
                                 // Define positions for 5 ornaments
                                 $positions = [
-                                    ['top' => '22%', 'left' => '45%'],
-                                    ['top' => '38%', 'left' => '30%'],
-                                    ['top' => '42%', 'left' => '58%'],
-                                    ['top' => '60%', 'left' => '25%'],
-                                    ['top' => '65%', 'left' => '55%']
+                                    ['top' => '26%', 'left' => '46%', 'right' => null],
+                                    ['top' => '44%', 'left' => null, 'right' => '51%'],
+                                    ['top' => '48%', 'left' => '53%', 'right' => null],
+                                    ['top' => '63%', 'left' => null, 'right' => '54%'],
+                                    ['top' => '65%', 'left' => '55%', 'right' => null]
                                 ];
-                                $pos = isset($positions[$local_index]) ? $positions[$local_index] : ['top' => '50%', 'left' => '50%'];
+
+                                $pos = isset($positions[$local_index]) ? $positions[$local_index] : ['top' => '50%', 'left' => '50%', 'right' => null];
                                 $ornament_src = "assets/süsler/" . htmlspecialchars($msg['ornament_type']) . ".webp";
-                            ?>
-                            <img src="<?php echo $ornament_src; ?>" alt="Süs" class="tree-ornament" 
-                                 style="position: absolute; top: <?php echo $pos['top']; ?>; left: <?php echo $pos['left']; ?>;"
-                                 data-global-index="<?php echo $global_index; ?>"
-                                 data-sender="<?php echo htmlspecialchars($msg['sender_name']); ?>" 
-                                 data-date="<?php echo date('M d, Y • h:i A', strtotime($msg['created_at'])); ?>">
-                            <?php $global_index++; ?>
-                        <?php endforeach; ?>
+
+                                // CSS stilini oluştur
+                                $style = "position: absolute; top: " . $pos['top'] . ";";
+                                if (isset($pos['left']) && $pos['left'] !== null) {
+                                    $style .= " left: " . $pos['left'] . ";";
+                                    $style .= " right: auto;";
+                                } elseif (isset($pos['right']) && $pos['right'] !== null) {
+                                    $style .= " right: " . $pos['right'] . ";";
+                                    $style .= " left: auto;";
+                                }
+                                ?>
+                                <img src="<?php echo $ornament_src; ?>" alt="Süs" class="tree-ornament"
+                                    style="<?php echo $style; ?>" data-global-index="<?php echo $global_index; ?>"
+                                    data-sender="<?php echo htmlspecialchars($msg['sender_name']); ?>"
+                                    data-date="<?php echo date('M d, Y • h:i A', strtotime($msg['created_at'])); ?>">
+                                <?php $global_index++; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             </div>
 
@@ -178,7 +195,19 @@ if (empty($chunks)) {
 
         <p class="footer-text">Daha fazla süs kazanmak için paylaşın!</p>
     </div>
-    
+
+
+    <div class="footer-credits"
+        style="margin-top: 25px; text-align: center; font-size: 0.75rem; color: #C92A2A; opacity: 0.8; line-height: 1.6;">
+        <div>
+            UI Design by <a href="https://www.linkedin.com/in/furkan-utkay-demirbas/"
+                style="color: inherit; text-decoration: none; font-weight: 700;">Furkan Demirbaş</a>
+        </div>
+        <div>
+            Backend by <a href="https://oguzkaanekin.site" target="_blank"
+                style="color: inherit; text-decoration: none; font-weight: 700;">oguzkaanekin</a>
+        </div>
+    </div>
 
     <div class="modal-overlay" id="messageModal">
         <div class="modal-card">
@@ -269,7 +298,7 @@ if (empty($chunks)) {
                 setTimeout(() => { toast.classList.remove('show'); }, 3000);
             });
         });
-        
+
         // --- Slider Logic ---
         let currentSlide = 0;
         const totalSlides = <?php echo count($chunks); ?>;
@@ -294,11 +323,11 @@ if (empty($chunks)) {
                 updateSlider();
             }
         }
-        
+
         // Go to last slide initially if there are messages
         if (totalSlides > 1) {
-             currentSlide = totalSlides - 1;
-             updateSlider();
+            currentSlide = totalSlides - 1;
+            updateSlider();
         }
 
         // --- YENİ POPUP MANTIĞI ---
@@ -309,20 +338,24 @@ if (empty($chunks)) {
 
         // Verileri topla
         const ornamentData = [
-            <?php 
+            <?php
             $target_date = strtotime('2025-12-25 00:00:00');
             $now = time();
-            foreach ($messages as $msg): 
+            foreach ($messages as $msg):
                 $is_revealed = ($now >= $target_date);
-                $content = $is_revealed ? htmlspecialchars($msg['message']) : "Mesajlar Noel'de açılacak!";
-            ?>
-            {
-                src: "assets/süsler/<?php echo htmlspecialchars($msg['ornament_type']); ?>.webp",
-                sender: "<?php echo htmlspecialchars($msg['sender_name']); ?>",
-                date: "<?php echo date('M d, Y • h:i A', strtotime($msg['created_at'])); ?>",
-                message: "<?php echo $content; ?>",
-                revealed: <?php echo $is_revealed ? 'true' : 'false'; ?>
-            },
+                // Use the raw message for json_encode, it handles escaping for JS. 
+                // textContent in JS will handle HTML entity escaping for display.
+                $content = $is_revealed ? $msg['message'] : "Mesajlar Noel'de açılacak!";
+                $ornament_src = "assets/süsler/" . $msg['ornament_type'] . ".webp";
+                $date_str = date('M d, Y • h:i A', strtotime($msg['created_at']));
+                ?>
+                {
+                    src: <?php echo json_encode($ornament_src); ?>,
+                    sender: <?php echo json_encode($msg['sender_name']); ?>,
+                    date: <?php echo json_encode($date_str); ?>,
+                    message: <?php echo json_encode($content); ?>,
+                    revealed: <?php echo json_encode($is_revealed); ?>
+                },
             <?php endforeach; ?>
         ];
 
@@ -347,7 +380,7 @@ if (empty($chunks)) {
             if (sender) sender.textContent = 'Gönderen: ' + data.sender;
             if (date) date.textContent = data.date;
             if (messageEl) messageEl.textContent = data.message;
-            
+
             if (data.revealed) {
                 if (giftImg) giftImg.style.display = 'none';
             } else {
@@ -389,4 +422,5 @@ if (empty($chunks)) {
         });
     </script>
 </body>
+
 </html>
